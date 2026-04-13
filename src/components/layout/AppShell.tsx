@@ -4,20 +4,19 @@ import type { ReactNode } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 
 const W = Dimensions.get("window").width;
 
 type Props = {
   children: ReactNode;
   /**
-   * Use com bottom tab navigator: o tab bar já aplica o inset inferior.
-   * Sem isto, o SafeAreaView soma padding em baixo e fica uma faixa vazia.
+   * Com bottom tab navigator: o tab bar já aplica o inset inferior.
    */
   omitBottomSafeArea?: boolean;
 };
 
-/** Fundo com gradiente e orbes, alinhado à identidade Lar em Dia (claro ou escuro). */
+/** Fundo com gradiente e orbes (tema claro/escuro). */
 export function AppShell({ children, omitBottomSafeArea }: Props) {
   const { colors } = useTheme();
 

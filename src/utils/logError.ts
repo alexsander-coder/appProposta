@@ -1,6 +1,5 @@
 /**
- * Erros no terminal onde o Metro roda (`npx expo start`) e no Remote JS
- * (menu do Expo / Chrome DevTools no dispositivo ou emulador).
+ * Erros no terminal do Metro (`npx expo start`) e no Remote JS (Expo / DevTools).
  */
 export function logAppError(
   tag: string,

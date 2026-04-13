@@ -1,4 +1,4 @@
-/** UUID v4; Hermes/RN as vezes nao expoe `globalThis.crypto.randomUUID`. */
+/** UUID v4; Hermes/RN por vezes não expõe `globalThis.crypto.randomUUID`. */
 export function randomUUID(): string {
   const c = globalThis.crypto as Crypto | undefined;
   if (c?.randomUUID) {

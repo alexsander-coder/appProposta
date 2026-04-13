@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 
-import { AppShell } from "../components/AppShell";
+import { AppShell } from "../components/layout/AppShell";
 import { useShellStyles } from "../hooks/useShellStyles";
 
 type Props = {

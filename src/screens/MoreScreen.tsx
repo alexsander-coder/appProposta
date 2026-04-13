@@ -5,7 +5,7 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { useHousehold } from "../context/HouseholdContext";
 import type { MainTabParamList, MoreStackParamList } from "../navigation/types";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../services/supabase/client";
 import { useShellStyles } from "../hooks/useShellStyles";
 import type { BottomTabNavigationProp } from "@react-navigation/bottom-tabs";
 

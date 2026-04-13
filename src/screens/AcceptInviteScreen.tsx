@@ -11,8 +11,8 @@ import {
   View,
 } from "react-native";
 
-import { logAppError } from "../lib/logError";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../services/supabase/client";
+import { logAppError } from "../utils/logError";
 import { useShellStyles } from "../hooks/useShellStyles";
 
 type Props = {

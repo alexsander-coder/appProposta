@@ -16,7 +16,7 @@ import {
 } from "react-native";
 
 import { useTheme } from "../context/ThemeContext";
-import { supabase } from "../lib/supabase";
+import { supabase } from "../services/supabase/client";
 import { createAuthStyles, createBrandMarkStyles } from "../theme/createAuthStyles";
 import type { AppColors } from "../theme/palettes";
 

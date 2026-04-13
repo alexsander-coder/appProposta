@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { Pressable, Text } from "react-native";
 
-import { StackHeaderGradient } from "../components/StackHeaderGradient";
+import { StackHeaderGradient } from "../components/navigation/StackHeaderGradient";
 import { useTheme } from "../context/ThemeContext";
 import { AuthScreen } from "../screens/AuthScreen";
 import { ThemeSettingsScreen } from "../screens/ThemeSettingsScreen";

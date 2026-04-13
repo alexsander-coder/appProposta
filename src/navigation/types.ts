@@ -15,6 +15,10 @@ export type MoreStackParamList = {
 export type MainTabParamList = {
   Dashboard: undefined;
   Tasks: undefined;
+  Agenda: undefined;
+  Shopping: undefined;
+  Bills: undefined;
+  Alerts: undefined;
   Documents: undefined;
   More: NavigatorScreenParams<MoreStackParamList>;
 };

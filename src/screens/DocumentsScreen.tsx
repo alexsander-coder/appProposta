@@ -16,11 +16,11 @@ import {
   View,
 } from "react-native";
 
-import { logAppError } from "../lib/logError";
-import { supabase } from "../lib/supabase";
-import { DOCUMENTS_STORAGE_BUCKET } from "../lib/storageBucket";
-import { formatFileSize, MAX_UPLOAD_BYTES } from "../lib/uploadLimits";
-import { randomUUID } from "../lib/uuid";
+import { DOCUMENTS_STORAGE_BUCKET } from "../config/storage";
+import { formatFileSize, MAX_UPLOAD_BYTES } from "../config/upload";
+import { supabase } from "../services/supabase/client";
+import { logAppError } from "../utils/logError";
+import { randomUUID } from "../utils/uuid";
 import { useTheme } from "../context/ThemeContext";
 import { useShellStyles } from "../hooks/useShellStyles";
 

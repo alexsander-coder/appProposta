@@ -1,7 +1,8 @@
 const MB = 1024 * 1024;
 
 const parsedMb = Number(process.env.EXPO_PUBLIC_MAX_UPLOAD_MB);
-/** Limite por arquivo (padrao 20 MB). Ajuste via EXPO_PUBLIC_MAX_UPLOAD_MB no .env. */
+
+/** Limite por arquivo (padrão 20 MB). Ajuste via EXPO_PUBLIC_MAX_UPLOAD_MB no .env. */
 export const MAX_UPLOAD_BYTES =
   Number.isFinite(parsedMb) && parsedMb > 0 ? Math.floor(parsedMb * MB) : 20 * MB;
 

@@ -7,13 +7,17 @@ import {
   type NativeStackNavigationProp,
 } from "@react-navigation/native-stack";
 
-import { AppShell } from "../components/AppShell";
-import { StackHeaderGradient } from "../components/StackHeaderGradient";
+import { AppShell } from "../components/layout/AppShell";
+import { StackHeaderGradient } from "../components/navigation/StackHeaderGradient";
 import { useHousehold } from "../context/HouseholdContext";
 import { useTheme } from "../context/ThemeContext";
 import { AcceptInviteScreen } from "../screens/AcceptInviteScreen";
+import { AgendaScreen } from "../screens/AgendaScreen";
+import { AlertsScreen } from "../screens/AlertsScreen";
+import { BillsScreen } from "../screens/BillsScreen";
 import { DashboardScreen } from "../screens/DashboardScreen";
 import { DocumentsScreen } from "../screens/DocumentsScreen";
+import { ShoppingListScreen } from "../screens/ShoppingListScreen";
 import { TasksScreen } from "../screens/TasksScreen";
 import { InviteMemberScreen } from "../screens/InviteMemberScreen";
 import { MoreScreen } from "../screens/MoreScreen";
@@ -96,6 +100,31 @@ function DocumentsRoute() {
   return <DocumentsScreen householdId={householdId} userId={userId} />;
 }
 
+function AgendaRoute() {
+  const { householdId, userId } = useHousehold();
+  return <AgendaScreen householdId={householdId} userId={userId} />;
+}
+
+function TasksRoute() {
+  const { householdId, userId } = useHousehold();
+  return <TasksScreen householdId={householdId} userId={userId} />;
+}
+
+function ShoppingRoute() {
+  const { householdId, userId } = useHousehold();
+  return <ShoppingListScreen householdId={householdId} userId={userId} />;
+}
+
+function BillsRoute() {
+  const { householdId, userId } = useHousehold();
+  return <BillsScreen householdId={householdId} userId={userId} />;
+}
+
+function AlertsRoute() {
+  const { householdId, userId } = useHousehold();
+  return <AlertsScreen householdId={householdId} userId={userId} />;
+}
+
 export function MainTabNavigator() {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
@@ -150,7 +179,7 @@ export function MainTabNavigator() {
         />
         <Tab.Screen
           name="Tasks"
-          component={TasksScreen}
+          component={TasksRoute}
           options={{
             title: "Tarefas",
             tabBarIcon: ({ color }) => (
@@ -159,6 +188,46 @@ export function MainTabNavigator() {
                 size={TAB_ICON_SIZE}
                 color={color}
               />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Agenda"
+          component={AgendaRoute}
+          options={{
+            title: "Agenda",
+            tabBarIcon: ({ color }) => (
+              <Ionicons name="calendar-outline" size={TAB_ICON_SIZE} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Shopping"
+          component={ShoppingRoute}
+          options={{
+            title: "Compras",
+            tabBarIcon: ({ color }) => (
+              <Ionicons name="cart-outline" size={TAB_ICON_SIZE} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Bills"
+          component={BillsRoute}
+          options={{
+            title: "Contas",
+            tabBarIcon: ({ color }) => (
+              <Ionicons name="wallet-outline" size={TAB_ICON_SIZE} color={color} />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="Alerts"
+          component={AlertsRoute}
+          options={{
+            title: "Alertas",
+            tabBarIcon: ({ color }) => (
+              <Ionicons name="notifications-outline" size={TAB_ICON_SIZE} color={color} />
             ),
           }}
         />

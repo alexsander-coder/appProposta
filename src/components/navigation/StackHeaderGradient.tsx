@@ -1,11 +1,10 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet, View } from "react-native";
 
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 
 /**
- * Fundo do header nativo alinhado ao AppShell: base sólida + mesmo gradiente vertical.
- * Evita falha em alguns Android/iOS quando só há gradiente transparente.
+ * Fundo do header nativo alinhado ao AppShell (base + gradiente vertical).
  */
 export function StackHeaderGradient() {
   const { colors } = useTheme();
