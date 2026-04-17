@@ -4,6 +4,7 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 
 import { useHousehold } from "../context/HouseholdContext";
+import { useTheme } from "../context/ThemeContext";
 import type { MainTabParamList, MoreStackParamList } from "../navigation/types";
 import { supabase } from "../services/supabase/client";
 import { useShellStyles } from "../hooks/useShellStyles";
@@ -44,6 +45,7 @@ const Row = ({
 export function MoreScreen() {
   const navigation = useNavigation<Nav>();
   const { shell } = useShellStyles();
+  const { colors } = useTheme();
   const { householdName } = useHousehold();
 
   const signOut = async () => {
@@ -59,6 +61,18 @@ export function MoreScreen() {
       <Text style={shell.eyebrow}>Lar em Dia</Text>
       <Text style={shell.screenTitle}>Mais</Text>
       <Text style={shell.mutedLine}>{householdName}</Text>
+
+      <View style={[shell.glassCard, styles.hero]}>
+        <Text style={[styles.heroEyebrow, { color: colors.textSecondary }]}>
+          Preferencias
+        </Text>
+        <Text style={[styles.heroTitle, { color: colors.textPrimary }]}>
+          Ajustes da sua experiencia
+        </Text>
+        <Text style={[styles.heroSubtitle, { color: colors.textMuted }]}>
+          Convites, conta e tema visual com a mesma linguagem Minimal Luxury.
+        </Text>
+      </View>
 
       <Text style={shell.section}>Conta e casa</Text>
       <Row
@@ -98,6 +112,10 @@ export function MoreScreen() {
 
 const styles = StyleSheet.create({
   scrollBottom: { paddingBottom: 32 },
+  hero: { gap: 8 },
+  heroEyebrow: { fontSize: 11, letterSpacing: 1.8, textTransform: "uppercase", fontWeight: "600" },
+  heroTitle: { fontSize: 24, lineHeight: 28, fontWeight: "700", letterSpacing: -0.3 },
+  heroSubtitle: { fontSize: 14, lineHeight: 21 },
   rowPress: {
     flexDirection: "row",
     alignItems: "center",

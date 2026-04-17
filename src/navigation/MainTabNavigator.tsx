@@ -17,14 +17,23 @@ import { AlertsScreen } from "../screens/AlertsScreen";
 import { BillsScreen } from "../screens/BillsScreen";
 import { DashboardScreen } from "../screens/DashboardScreen";
 import { DocumentsScreen } from "../screens/DocumentsScreen";
-import { ShoppingListScreen } from "../screens/ShoppingListScreen";
-import { TasksScreen } from "../screens/TasksScreen";
+import { HomeManagementScreen } from "../screens/HomeManagementScreen";
 import { InviteMemberScreen } from "../screens/InviteMemberScreen";
 import { MoreScreen } from "../screens/MoreScreen";
+import { PlanScreen } from "../screens/PlanScreen";
+import { ShoppingListScreen } from "../screens/ShoppingListScreen";
+import { TasksScreen } from "../screens/TasksScreen";
 import { ThemeSettingsScreen } from "../screens/ThemeSettingsScreen";
-import type { MainTabParamList, MoreStackParamList } from "./types";
+import type {
+  HomeStackParamList,
+  MainTabParamList,
+  MoreStackParamList,
+  PlanStackParamList,
+} from "./types";
 
 const Tab = createBottomTabNavigator<MainTabParamList>();
+const PlanStack = createNativeStackNavigator<PlanStackParamList>();
+const HomeStack = createNativeStackNavigator<HomeStackParamList>();
 const MoreStack = createNativeStackNavigator<MoreStackParamList>();
 
 const TAB_ICON_SIZE = 22;
@@ -125,6 +134,27 @@ function AlertsRoute() {
   return <AlertsScreen householdId={householdId} userId={userId} />;
 }
 
+function PlanStackNavigator() {
+  return (
+    <PlanStack.Navigator screenOptions={{ headerShown: false }}>
+      <PlanStack.Screen name="PlanOverview" component={PlanScreen} />
+      <PlanStack.Screen name="Tasks" component={TasksRoute} />
+      <PlanStack.Screen name="Agenda" component={AgendaRoute} />
+    </PlanStack.Navigator>
+  );
+}
+
+function HomeStackNavigator() {
+  return (
+    <HomeStack.Navigator screenOptions={{ headerShown: false }}>
+      <HomeStack.Screen name="HomeOverview" component={HomeManagementScreen} />
+      <HomeStack.Screen name="Shopping" component={ShoppingRoute} />
+      <HomeStack.Screen name="Bills" component={BillsRoute} />
+      <HomeStack.Screen name="Documents" component={DocumentsRoute} />
+    </HomeStack.Navigator>
+  );
+}
+
 export function MainTabNavigator() {
   const { colors } = useTheme();
   const insets = useSafeAreaInsets();
@@ -168,23 +198,23 @@ export function MainTabNavigator() {
         }}
       >
         <Tab.Screen
-          name="Dashboard"
+          name="Today"
           component={DashboardScreen}
           options={{
-            title: "Início",
+            title: "Hoje",
             tabBarIcon: ({ color }) => (
               <Ionicons name="home-outline" size={TAB_ICON_SIZE} color={color} />
             ),
           }}
         />
         <Tab.Screen
-          name="Tasks"
-          component={TasksRoute}
+          name="Plan"
+          component={PlanStackNavigator}
           options={{
-            title: "Tarefas",
+            title: "Planejar",
             tabBarIcon: ({ color }) => (
               <Ionicons
-                name="checkbox-outline"
+                name="calendar-clear-outline"
                 size={TAB_ICON_SIZE}
                 color={color}
               />
@@ -192,32 +222,12 @@ export function MainTabNavigator() {
           }}
         />
         <Tab.Screen
-          name="Agenda"
-          component={AgendaRoute}
+          name="Home"
+          component={HomeStackNavigator}
           options={{
-            title: "Agenda",
+            title: "Casa",
             tabBarIcon: ({ color }) => (
-              <Ionicons name="calendar-outline" size={TAB_ICON_SIZE} color={color} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Shopping"
-          component={ShoppingRoute}
-          options={{
-            title: "Compras",
-            tabBarIcon: ({ color }) => (
-              <Ionicons name="cart-outline" size={TAB_ICON_SIZE} color={color} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Bills"
-          component={BillsRoute}
-          options={{
-            title: "Contas",
-            tabBarIcon: ({ color }) => (
-              <Ionicons name="wallet-outline" size={TAB_ICON_SIZE} color={color} />
+              <Ionicons name="grid-outline" size={TAB_ICON_SIZE} color={color} />
             ),
           }}
         />
@@ -228,16 +238,6 @@ export function MainTabNavigator() {
             title: "Alertas",
             tabBarIcon: ({ color }) => (
               <Ionicons name="notifications-outline" size={TAB_ICON_SIZE} color={color} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Documents"
-          component={DocumentsRoute}
-          options={{
-            title: "Documentos",
-            tabBarIcon: ({ color }) => (
-              <Ionicons name="document-text-outline" size={TAB_ICON_SIZE} color={color} />
             ),
           }}
         />

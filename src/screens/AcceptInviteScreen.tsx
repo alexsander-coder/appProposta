@@ -13,6 +13,7 @@ import {
 
 import { supabase } from "../services/supabase/client";
 import { logAppError } from "../utils/logError";
+import { useTheme } from "../context/ThemeContext";
 import { useShellStyles } from "../hooks/useShellStyles";
 
 type Props = {
@@ -22,6 +23,7 @@ type Props = {
 
 export function AcceptInviteScreen({ onSuccess, onBack }: Props) {
   const { shell, placeholderColor } = useShellStyles();
+  const { colors } = useTheme();
   const [token, setToken] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -33,9 +35,12 @@ export function AcceptInviteScreen({ onSuccess, onBack }: Props) {
     }
 
     setLoading(true);
+
     const { data, error } = await supabase.rpc("accept_household_invite", {
       invite_token: t,
     });
+
+    
     setLoading(false);
 
     if (error) {
@@ -91,7 +96,7 @@ export function AcceptInviteScreen({ onSuccess, onBack }: Props) {
           ]}
         >
           {loading ? (
-            <ActivityIndicator color="#FFF" />
+            <ActivityIndicator color={colors.textPrimary} />
           ) : (
             <Text style={shell.primaryBtnText}>Entrar na casa</Text>
           )}

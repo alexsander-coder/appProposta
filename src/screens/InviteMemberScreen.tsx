@@ -22,7 +22,16 @@ type Props = {
   onBack?: () => void;
 };
 
-type InviteRow = { token: string; expires_at: string };
+type InviteRow = { token: string; expires_at: string; role: string };
+
+type MemberRole = "owner" | "admin" | "member" | "viewer";
+type InviteableRole = "admin" | "member" | "viewer";
+
+const ROLE_LABELS: Record<InviteableRole, string> = {
+  admin: "Administrador",
+  member: "Membro",
+  viewer: "Somente leitura",
+};
 
 export function InviteMemberScreen({
   householdId,
@@ -33,6 +42,8 @@ export function InviteMemberScreen({
   const { colors } = useTheme();
   const { shell } = useShellStyles();
   const [canInvite, setCanInvite] = useState<boolean | null>(null);
+  const [myRole, setMyRole] = useState<MemberRole | null>(null);
+  const [inviteRole, setInviteRole] = useState<InviteableRole>("member");
   const [invite, setInvite] = useState<InviteRow | null>(null);
   const [loading, setLoading] = useState(false);
   const [creating, setCreating] = useState(false);
@@ -54,9 +65,13 @@ export function InviteMemberScreen({
       setCanInvite(false);
       return;
     }
-    const ok =
-      data?.role === "owner" || data?.role === "admin";
+    const role = (data?.role as MemberRole | undefined) ?? null;
+    setMyRole(role);
+    const ok = role === "owner" || role === "admin";
     setCanInvite(ok);
+    if (role === "admin") {
+      setInviteRole("member");
+    }
   }, [householdId, userId]);
 
   useEffect(() => {
@@ -67,6 +82,7 @@ export function InviteMemberScreen({
     setCreating(true);
     const { data, error } = await supabase.rpc("create_household_invite", {
       target_household_id: householdId,
+      invite_role: inviteRole,
     });
     setCreating(false);
 
@@ -82,12 +98,17 @@ export function InviteMemberScreen({
       Alert.alert("Erro", "Resposta vazia do servidor.");
       return;
     }
-    setInvite(row);
+    setInvite({
+      token: row.token,
+      expires_at: row.expires_at,
+      role: row.role ?? inviteRole,
+    });
   };
 
   const shareInvite = async () => {
     if (!invite) return;
-    const msg = `Convite Lar em Dia — casa "${householdName}"\n\nCodigo: ${invite.token}\n\nAbra o app, faca login e use "Aceitar convite". Expira em 7 dias.`;
+    const roleLabel = ROLE_LABELS[(invite.role as InviteableRole) ?? "member"] ?? invite.role;
+    const msg = `Convite Lar em Dia — casa "${householdName}"\n\nPapel: ${roleLabel}\nCodigo: ${invite.token}\n\nAbra o app, faca login e use "Aceitar convite". Expira em 7 dias.`;
     try {
       await Share.share({ message: msg });
     } catch (e) {
@@ -131,6 +152,41 @@ export function InviteMemberScreen({
         Gere um codigo e envie para a pessoa entrar em {householdName}.
       </Text>
 
+      <Text style={shell.label}>Papel ao entrar</Text>
+      <View style={styles.roleRow}>
+        {(myRole === "owner"
+          ? (["member", "admin", "viewer"] as const)
+          : (["member"] as const)
+        ).map((r) => {
+          const active = inviteRole === r;
+          return (
+            <Pressable
+              key={r}
+              onPress={() => setInviteRole(r)}
+              style={[
+                shell.chip,
+                active && shell.chipActive,
+                styles.roleChip,
+              ]}
+            >
+              <Text
+                style={[
+                  shell.chipText,
+                  active && shell.chipTextActive,
+                ]}
+              >
+                {ROLE_LABELS[r]}
+              </Text>
+            </Pressable>
+          );
+        })}
+      </View>
+      {myRole === "admin" ? (
+        <Text style={shell.hint}>
+          Administradores so podem convidar como membro. Dono pode promover depois.
+        </Text>
+      ) : null}
+
       {!invite ? (
         <Pressable
           onPress={() => void createInvite()}
@@ -150,6 +206,9 @@ export function InviteMemberScreen({
           <Text style={shell.label}>Codigo (toque e segure para copiar)</Text>
           <Text selectable style={shell.tokenBox}>
             {invite.token}
+          </Text>
+          <Text style={shell.meta}>
+            Papel: {ROLE_LABELS[(invite.role as InviteableRole) ?? "member"] ?? invite.role}
           </Text>
           <Text style={shell.meta}>
             Valido ate: {new Date(invite.expires_at).toLocaleString("pt-BR")}
@@ -180,5 +239,7 @@ const styles = StyleSheet.create({
     paddingTop: 48,
   },
   content: { paddingHorizontal: 24, paddingTop: 12, gap: 12 },
+  roleRow: { flexDirection: "row", flexWrap: "wrap", gap: 8 },
+  roleChip: { marginRight: 0 },
   pressed: { opacity: 0.88 },
 });
